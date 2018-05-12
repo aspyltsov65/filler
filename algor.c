@@ -20,8 +20,8 @@ void	ft_algoritm(t_fil *fl)
 	int	l;
 	int	r1;
 	int	r2;
-	int	k;
-	int	n;
+	int	cord[2];
+	int	count;
 
 	i = -1;
 	while (++i < fl->my)
@@ -33,63 +33,64 @@ void	ft_algoritm(t_fil *fl)
 		if (j != fl->mx)
 			break;
 	}
-	// dprintf(2, "fl->my %d fl->mx %d\n", fl->my, fl->mx);
-	// dprintf(2, "\ni %d j %d\n", i, j);
 	l = fl->mx + fl->my;
+	count = 0;
 	y = -1;
 	while (++y < fl->my)
 	{
 		x = -1;
 		while (++x < fl->mx)
 		{
-			if (fl->map[y][x] == fl->symb || fl->map[y][x] == '.')
+			if(ft_check(fl, y, x) == 1)
 			{
-				if(ft_check(fl, y, x) == 1)
+				r1 = (i - y < 0 ? (i - y) * (-1) : i - y);
+				r2 = (j - x < 0 ? (j - x) * (-1) : j - x);
+				if (r1 + r2 < l)
 				{
-					dprintf(2, "hello\n");
-					r1 = (i - y < 0 ? (i - y) * (-1) : i + y);
-					r2 = (j - x < 0 ? (j - x) * (-1) : j + x);
-					if (r1 + r2 < l)
-					{
-						l = r1 + r2;
-						k = x;
-						n = y;
-					}
+					l = r1 + r2;
+					cord[0] = x;
+					cord[1] = y;
 				}
+				count++;
 			}
 		}
 	}
-	dprintf(2, "my cootdinate %d %d\n", k, n);
-	printf("%d %d\n", k, n);
+	if (count == 0)
+	{
+		cord[0] = 0;
+		cord[1] = 0;
+	}
+	ft_putnbr_fd(cord[1], 1);
+	ft_putchar_fd(' ', 1);
+	ft_putnbr_fd(cord[0], 1);
+	ft_putchar_fd('\n', 1);
+
 }
 
 int		ft_check(t_fil *fl, int y, int x)
 {
-	int	count;
+	int	n;
+	int	i;
+	int	k;
+	int	m;
 
-	count = 0;
-	while (fl->tj < fl->tx && x < fl->mx)
+	i = 0;
+	n = -1;
+	while (++n < fl->count)
 	{
-		while (fl->ti < fl->ty && y < fl->my)
-		{
-			dprintf(2, "darov\n");
-			if(fl->token[fl->ti++][fl->tj++] == '*' && fl->map[y][x] &&
-			(fl->map[y][x] == '.' || fl->map[y][x] == fl->symb))
-			{
-				dprintf(2, "privetik\n");
-				if (fl->map[y++][x] == fl->symb)
-				{
-					dprintf(2, "ya tyt\n");
-					count++;
-				}
-			}
-			else
-				return (0);
-		}
-		fl->ti = 0;
-		x++;
+		m = fl->c_y[n];
+		k = fl->c_x[n];
+		if ((y + m >= fl->my) || (x + k >= fl->mx))
+			return (0);
+		if (fl->map[y + m][x + k] == fl->symb ||
+		fl->map[y + m][x + k] == ft_tolower(fl->symb))
+			i++;
+		else if (fl->map[y + fl->c_y[n]][x + fl->c_x[n]] == '.')
+			;
+		else
+			return (0);
 	}
-	return (count == 1 ? 1 : 0);
+	return (i == 1 ? 1 : 0);
 }
 
 
