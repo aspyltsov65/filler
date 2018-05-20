@@ -76,7 +76,9 @@ SOURCE = ft_isalnum.c\
 		ft_count_words.c\
 		ft_sqrt.c\
 		ft_smassive.c\
-		ft_createlist.c
+		ft_createlist.c\
+		ft_count_symbol.c\
+		ft_parse_list.c
 
 NAME = libft.a
 
