@@ -48,18 +48,17 @@ void	ft_vizualize(t_bon *fl)
 	{
 		j = -1;
 		while (++j < fl->mx)
-		{
 			ft_color(fl, i, j, playwin);
-			wrefresh(playwin);
-		}
 	}
+	wrefresh(playwin);
 }
 
-void	ft_read_for_bonus(t_list *list, t_bon *fl)
+void	ft_read_for_bonus(t_list *list, t_bon *fl, int *c)
 {
 	int		j;
 	char	*line;
 
+	*c = fl->my;
 	j = -1;
 	while (++j < fl->my && get_next_line(0, &line) > 0)
 	{
@@ -77,15 +76,15 @@ void	ft_reading(t_bon *fl, t_list *list, char *line)
 {
 	int	c;
 
-	c = fl->my;
 	while (get_next_line(0, &line) > 0)
 	{
-		if (ft_strstr(line, "Plateau") != NULL)
+		if (ft_strstr(line, "Plateau") != NULL && (c = 8))
 		{
-			fl->my = ft_atoi(&line[8]) + 1;
-			fl->mx = ft_atoi(&line[10]);
-			c = fl->my;
-			ft_read_for_bonus(list, fl);
+			fl->my = ft_atoi(&line[c]) + 1;
+			while (ft_isdigit(line[c++]))
+				;
+			fl->mx = ft_atoi(&line[c]);
+			ft_read_for_bonus(list, fl, &c);
 		}
 		if (line[0] == '=')
 		{
@@ -120,7 +119,9 @@ int		main(void)
 	get_next_line(0, &line);
 	fl->name = (ft_strstr(line, "p1") != NULL ? 2 : 1);
 	free(line);
+	system("say Start of the game");
 	ft_reading(fl, list, line);
+	system("say Result of the game");
 	nodelay(stdsrc, FALSE);
 	if (getch() != -1)
 		endwin();

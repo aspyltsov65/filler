@@ -64,6 +64,30 @@ void	ft_read_map_token(int val, t_fil *fl, t_list *list, t_list *begin)
 	}
 }
 
+void	ft_parse(t_fil *fl, char *line, t_list *list, t_list *begin)
+{
+	int	n;
+
+	if (ft_strstr(line, "Plateau") != NULL)
+	{
+		n = 8;
+		fl->my = ft_atoi(&line[n]) + 1;
+		while (ft_isdigit(line[n]) == 1)
+			n++;
+		fl->mx = ft_atoi(&line[n]);
+		ft_read_map_token(fl->my, fl, list, begin);
+	}
+	if (ft_strstr(line, "Piece") != NULL)
+	{
+		n = 6;
+		fl->ty = ft_atoi(&line[n]);
+		while (ft_isdigit(line[n]) == 1)
+			n++;
+		fl->tx = ft_atoi(&line[n]);
+		ft_read_map_token(fl->ty, fl, list, begin);
+	}
+}
+
 void	ft_read(t_fil *fl)
 {
 	char	*line;
@@ -74,18 +98,7 @@ void	ft_read(t_fil *fl)
 	begin = NULL;
 	while (get_next_line(0, &line) > 0)
 	{
-		if (ft_strstr(line, "Plateau") != NULL)
-		{
-			fl->my = ft_atoi(&line[8]) + 1;
-			fl->mx = ft_atoi(&line[10]);
-			ft_read_map_token(fl->my, fl, list, begin);
-		}
-		if (ft_strstr(line, "Piece") != NULL)
-		{
-			fl->ty = ft_atoi(&line[6]);
-			fl->tx = ft_atoi(&line[8]);
-			ft_read_map_token(fl->ty, fl, list, begin);
-		}
+		ft_parse(fl, line, list, begin);
 		free(line);
 	}
 }
@@ -101,11 +114,18 @@ int		main(void)
 	fl->my = 0;
 	fl->tx = 0;
 	fl->ty = 0;
+	fl->sum = 0;
 	get_next_line(0, &line);
 	if (!(ft_strstr(line, "p1")))
+	{
 		fl->symb = 'X';
+		fl->enemy = 'O';
+	}
 	else
+	{
 		fl->symb = 'O';
+		fl->enemy = 'X';
+	}
 	free(line);
 	ft_read(fl);
 	return (0);

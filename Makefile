@@ -16,7 +16,7 @@ NAME	=	apyltsov.filler
 BONUS	=	bonus
 SFILES	=	read.c\
 			get_next_line.c\
-			algor.c
+			new_algor.c
 FILES	=	get_next_line.c\
 			vizualize.c
 BINS	=	$(SFILES:.c=.o) $(FILES:.c=.o)
