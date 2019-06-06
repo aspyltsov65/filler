@@ -92,5 +92,7 @@ Piece 2 2:
 ## Example filler game
 [![Example filler game](http://img.youtube.com/vi/QkK8mOULKZ8/0.jpg)](https://www.youtube.com/watch?v=QkK8mOULKZ8 "Filler game")
 
+> Click on image to enable video
 
-
+## Author 
+- Anastasiia Pyltsova - [GitHub Page](https://github.com/aspyltsov65)
